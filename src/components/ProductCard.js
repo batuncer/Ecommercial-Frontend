@@ -1,6 +1,10 @@
 import React from "react";
 import Slider from "react-slick";
+import { useNavigate } from "react-router-dom";
+
 const ProductCard = ({ product }) => {
+  const navigate = useNavigate();
+
   var settings = {
     dots: true,
     infinite: true,
@@ -9,7 +13,10 @@ const ProductCard = ({ product }) => {
     slidesToScroll: 1,
   };
   return (
-    <div className="w-[250px] bg-gray-100">
+    <div
+      className="w-[250px] bg-gray-100"
+      onClick={() => navigate(`/product/${product?._id}`)}
+    >
       <Slider {...settings}>
         {product?.images?.map((image, index) => (
           <div key={index}>
