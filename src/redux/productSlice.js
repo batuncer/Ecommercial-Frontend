@@ -6,14 +6,18 @@ const initialState = {
 };
 
 export const getProducts = createAsyncThunk("products", async () => {
-  const response = await fetch(`http://localhost:8080/products`);
+  const response = await fetch(`http://localhost:8080/products/`);
   return await response.json();
 });
 
 export const productSlice = createSlice({
   name: "product",
   initialState,
-  reducers: {},
+  reducers: {
+    loading: (state, payload) => {
+      state.loading = true;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(getProducts.pending, (state, action) => {
       state.loading = true;
