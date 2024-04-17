@@ -12,21 +12,19 @@ const ProductCard = ({ product }) => {
     slidesToShow: 1,
     slidesToScroll: 1,
   };
+
   return (
-    <div
-      className="w-[250px] bg-gray-100"
-      onClick={() => navigate(`/product/${product?._id}`)}
-    >
+    <div className="w-[250px] bg-gray-100">
       <Slider {...settings}>
         {product?.images?.map((image, index) => (
-          <div key={index}>
+          <div key={index} onClick={() => navigate(`/product/${product._id}`)}>
             <img src={image.url} alt={product.name} />
           </div>
         ))}
       </Slider>
       <br></br>
-      <div className="text-xl px3 text-center">{product?.name}</div>
-      <div className="text-2xl px3 text-center">£{product?.price}</div>
+      <div className="text-xl px-3 text-center">{product?.name}</div>
+      <div className="text-2xl px-3 text-center">£{product?.price}</div>
     </div>
   );
 };

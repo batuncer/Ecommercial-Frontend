@@ -5,30 +5,25 @@ import ProductCard from "../components/ProductCard";
 
 const Home = () => {
     const dispatch = useDispatch();
-    const { products, loading } = useSelector(state => state.product);
+    const { products, loading } = useSelector(state => state.products);
 
     useEffect(() => {
         dispatch(getProducts())
     }, [dispatch])
-
-    console.log(products, loading, ("products"))
     return (
         <>
             {
                 loading ? "Loading..." : <div>
                     {
-                        products?.products && <div className="flex items-center justify-center gap-5 my-5 flex-wrap">
+                        products && <div className="flex items-center justify-center gap-5 my-5 flex-wrap">
                             {
-                                products?.products?.map((product, i) => (
+                                products.map((product, i) => (
                                     <ProductCard product={product} key={i} />
                                 ))
                             }
-
-
                         </div>
-
                     }
-                </div>
+                </div >
             }
         </>
     )
