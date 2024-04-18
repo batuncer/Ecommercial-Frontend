@@ -14,7 +14,7 @@ const ProductCard = ({ product }) => {
   };
 
   return (
-    <div className="w-[250px] bg-gray-100">
+    <div className='w-[250px] bg-gray-100'>
       <Slider {...settings}>
         {product?.images?.map((image, index) => (
           <div key={index} onClick={() => navigate(`/product/${product._id}`)}>
@@ -22,9 +22,7 @@ const ProductCard = ({ product }) => {
           </div>
         ))}
       </Slider>
-      <br></br>
-      <div className="text-xl px-3 text-center">{product?.name}</div>
-      <div className="text-2xl px-3 text-center">£{product?.price}</div>
+
     </div>
   );
 };

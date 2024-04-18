@@ -6,8 +6,22 @@ const initialState = {
   loading: false,
 };
 
-export const getProducts = createAsyncThunk("products", async () => {
-  const response = await fetch(`http://localhost:8080/products/`);
+export const getProducts = createAsyncThunk("products", async (params) => {
+  let link = `http://localhost:8080/products?keyword=${
+    params.keyword
+  }&rating[gte]=${params.rate || 0}&price[gte]=${
+    params.price.min || 0
+  }&price[lte]=${params.price.max || 30000}`;
+
+  if (params.catagory) {
+    link = `http://localhost:8080/products?keyword=${
+      params.keyword
+    }&rating[gte]=${params.rate || 0}&price[gte]=${
+      params.price.min || 0
+    }&price[lte]=${params.price.max || 30000}&catagory=${params.catagory}`;
+  }
+
+  const response = await fetch(link);
   return await response.json();
 });
 
