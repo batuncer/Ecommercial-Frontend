@@ -1,13 +1,31 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProductDetails } from "../redux/productSlice";
 import { useParams } from "react-router-dom";
 import Slider from "react-slick";
+import { FaStar } from "react-icons/fa";
+import { Button } from "../components/Button";
 
 const ProductDetails = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const { loading, product } = useSelector(state => state.products);
+  const [quantity, setQuantity] = useState(1)
+  const addBasket = () => {
+
+  }
+
+  const decrement = () => {
+    if (quantity > 1) {
+      setQuantity(quantity - 1);
+    }
+  }
+  const increment = () => {
+    if (quantity < product?.stock) {
+      setQuantity(quantity + 1);
+    }
+  }
+
 
   useEffect(() => {
     if (id) {
@@ -28,10 +46,10 @@ const ProductDetails = () => {
       {loading ? (
         "Loading..."
       ) : (
-        <div className="">
-          <div className="flex">
+        <div className="min-h-screen">
+          <div className="flex mt-4 justify-center gap-5">
             {product && (
-              <div className="w-[250px] bg-gray-100">
+              <div className="w-[700px]">
                 <Slider {...settings}>
                   {product?.images?.map((image, index) => (
                     <div key={index}>
@@ -39,12 +57,23 @@ const ProductDetails = () => {
                     </div>
                   ))}
                 </Slider>
-                <div>{product.name}</div>
-                <div>{product.price}</div>
-                <div>{product.stock}</div>
-                <div>{product.description}</div>
+
               </div>
             )}
+            <div className="w-[600px] pt-24 space-y-3 ml-4">
+              <div className="text-2xl">{product.name}</div>
+              <div >Price: £{product.price}</div>
+              <div>Stock: {product.stock}</div>
+              <div className="mb-4 flex items-center gap-3">Rating: {product.rating}<FaStar /></div>
+              <div className="flex items-center gap-4">
+                <div className="text-3xl cursor-pointer " onClick={decrement}>-</div>
+                <div>{quantity}</div>
+                <div className="text-3xl cursor-pointer " onClick={increment}>+</div>
+              </div>
+              <Button name={"Add to Basket"} onClick={addBasket} />
+              <h3 className="mb-4 text-2xl">Description:</h3>
+              <div >{product.description}</div>
+            </div>
           </div>
         </div>
       )}
