@@ -19,7 +19,10 @@ const ProductCard = ({ product }) => {
         {product?.images?.map((image, index) => (
           <div key={index} onClick={() => navigate(`/product/${product._id}`)}>
             <img src={image.url} alt={product.name} />
+            <div >{product.name}</div>
+            <div className="text-end">£{product.price}</div>
           </div>
+
         ))}
       </Slider>
 
