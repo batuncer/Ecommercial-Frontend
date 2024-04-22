@@ -1,6 +1,6 @@
 import { createContext, useEffect, useReducer, useCallback } from 'react';
-import { setSession } from './utils';
-import axios from '../utils/axios';
+
+import { setSession } from './util';
 
 // ----------------------------------------------------------------------
 const TYPE_INITIALIZE = "INITIALIZE"
@@ -116,7 +116,7 @@ export function AuthProvider({ children }) {
     }, [initialize]);
 
     // LOGIN
-    const login = async (email, password) => {
+    const login = async (token) => {
         setSession(token);
         const user = JSON.parse(atob(token.split('.')[1]));
         dispatch({
@@ -131,25 +131,41 @@ export function AuthProvider({ children }) {
 
 
 
-    // REGISTER
     const register = async (email, password, name, file, role) => {
-        const response = await axios.post('signup', {
-            email,
-            password,
-            name,
-            file,
-            role
-        });
+        try {
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/signup`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    email,
+                    password,
+                    name,
+                    file,
+                    role
+                })
+            });
 
-        const { token } = response.data;
+            if (!response.ok) {
+                // Hata durumunu kontrol et
+                const errorData = await response.json();
+                throw new Error(errorData.message || "Registration failed");
+            }
 
+            const { token } = await response.json();
 
-        setSession(token);
-        dispatch({
-            type: TYPE_SUCCESS_REGISTER,
-
-        });
+            setSession(token);
+            dispatch({
+                type: TYPE_SUCCESS_REGISTER
+            });
+        } catch (error) {
+            // Hata durumunda işlemleri yönet
+            console.error("Error during registration:", error);
+            // Hata durumunu uygun şekilde işleyin veya kullanıcıya gösterin
+        }
     };
+
 
 
 
@@ -169,7 +185,7 @@ export function AuthProvider({ children }) {
                 login,
                 logout,
                 register,
-                loginWithSlack
+
 
             }}
         >

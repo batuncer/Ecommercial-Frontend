@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import * as Yup from 'yup';
 import { yupResolver } from "@hookform/resolvers/yup"
 import { useForm } from "react-hook-form"
-import FormProvider from "../hooks-form/form-provider";
-import RHFTextField from "../hooks-form/RHFTextField";
-const LoginForm = ({ onSubmit }) => {
+import FormProvider from "../../hooks/Form-provider";
+import RHFTextField from "../../hooks/RHFTextField";
+import { Button } from "../Button";
 
+const LoginForm = ({ onSubmit }) => {
+    const [showPassword, setShowPassword] = useState(false);
 
 
     const schema = Yup.object().shape({
@@ -27,11 +29,9 @@ const LoginForm = ({ onSubmit }) => {
     });
 
     const {
-        reset,
-        watch,
-        setValue,
+
         handleSubmit,
-        getValues,
+
         formState: { isSubmitting, isValid },
     } = methods;
 
@@ -44,9 +44,13 @@ const LoginForm = ({ onSubmit }) => {
         <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
 
             <div>
-                <RHFTextField name='username' label='User Name' />
-                <RHFTextField name='password' label='Password' />
-                <Button type='submit' variant="contained">Login</Button>
+                <RHFTextField name='username' label='Username' />
+                <RHFTextField
+                    name='password'
+                    label='Password'
+                    type={showPassword ? 'text' : 'password'}
+                />
+                <Button name={"Login"} href={`/login`} />
             </div>
         </FormProvider>
 

@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import * as Yup from 'yup';
 import { yupResolver } from "@hookform/resolvers/yup"
 import { useForm } from "react-hook-form"
-import FormProvider from "../hooks-form/form-provider";
-import RHFTextField from "../hooks-form/RHFTextField";
-import Iconify from "../iconify/Iconify";
+import FormProvider from "../../hooks/Form-provider";
+import RHFTextField from "../../hooks/RHFTextField";
+import { IconButton } from "@material-tailwind/react";
+import Iconify from "../../iconify/iconify";
+import { Button } from "../Button";
 
 const SignUpForm = () => {
 
@@ -22,11 +24,9 @@ const SignUpForm = () => {
     });
 
     const {
-        reset,
-        watch,
-        setValue,
+
         handleSubmit,
-        getValues,
+
         formState: { isSubmitting, isValid },
     } = methods;
 
@@ -57,43 +57,19 @@ const SignUpForm = () => {
     return (
         <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
 
-            <Stack spacing={2}>
-                <RHFTextField name='username' label='User Name' />
-                <RHFTextField name='email' label='User email' />
+            <div>
+                <RHFTextField name='username' label='Username' />
+                <RHFTextField name='email' label='Email' />
                 <RHFTextField
-                    name="password"
-                    label="Password"
+                    name='password'
+                    label='Password'
                     type={showPassword ? 'text' : 'password'}
-                    InputProps={{
-                        endAdornment: (
-                            <InputAdornment position="end">
-                                <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
-                                    <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
-                                </IconButton>
-                            </InputAdornment>
-                        ),
-                    }}
                 />
-                <RHFTextField
-                    name="password_confirmation"
-                    label="Confirm Password"
-                    type={showPassword ? 'text' : 'password'}
-                    InputProps={{
-                        endAdornment: (
-                            <InputAdornment position="end">
-                                <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
-                                    <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
-                                </IconButton>
-                            </InputAdornment>
-                        ),
-                    }}
-                />
-                <RHFTextField name='file' label='User avatar' />
+                <RHFTextField name='file' label='Avatar' />
+                <Button type='submit' name={"Signup"} onClick={''} />
+                <Button name={"Login"} href={`/login`} />
 
-                <Button type='submit' variant="contained">Sign Up</Button>
-                <Button href={`/login`} >Login</Button>
-
-            </Stack>
+            </div>
 
         </FormProvider>
 

@@ -1,6 +1,5 @@
 import { FormProvider as Form, UseFormReturn } from 'react-hook-form';
 
-// ----------------------------------------------------------------------
 
 
 export default function FormProvider({ children, onSubmit, methods }) {

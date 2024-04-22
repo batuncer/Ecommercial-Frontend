@@ -11,6 +11,14 @@ const Header = () => {
     const dispatch = useDispatch();
     const menuItems = [
         {
+            name: "Login",
+            url: "/login"
+        },
+        {
+            name: "Singup",
+            url: "/singup"
+        },
+        {
             name: 'Profile',
             url: "/profile"
         },

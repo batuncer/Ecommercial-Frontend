@@ -3,7 +3,7 @@ import LoginForm from '../components/auth-components/LoginForm';
 
 
 
-const Login = ({ onSubmit }) => {
+const Login = () => {
     const onSubmit = (data) => {
         console.log("submit", data);
     }
