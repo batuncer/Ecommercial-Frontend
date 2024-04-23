@@ -44,13 +44,14 @@ const LoginForm = ({ onSubmit }) => {
         <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
 
             <div>
+                Username:
                 <RHFTextField name='username' label='Username' />
                 <RHFTextField
                     name='password'
                     label='Password'
                     type={showPassword ? 'text' : 'password'}
                 />
-                <Button name={"Login"} href={`/login`} />
+                <Button name={"Login"} href={`/`} />
             </div>
         </FormProvider>
 

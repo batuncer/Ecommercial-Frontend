@@ -4,9 +4,9 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import { useForm } from "react-hook-form"
 import FormProvider from "../../hooks/Form-provider";
 import RHFTextField from "../../hooks/RHFTextField";
-import { IconButton } from "@material-tailwind/react";
-import Iconify from "../../iconify/iconify";
 import { Button } from "../Button";
+import { config } from "../../config";
+
 
 const SignUpForm = () => {
 
@@ -32,7 +32,7 @@ const SignUpForm = () => {
 
     const onSubmit = async (data) => {
         try {
-            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/signup`, {
+            const response = await fetch(`${config.api.url}/register`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -44,14 +44,11 @@ const SignUpForm = () => {
 
             if (response.ok) {
                 console.log(result.message);
-                // Replace to main page when we created
             } else {
                 console.error(result.error);
-                // Display an error message to the user
             }
         } catch (error) {
             console.error("Error during signup:", error);
-            // Handle unexpected errors
         }
     };
     return (
@@ -66,7 +63,7 @@ const SignUpForm = () => {
                     type={showPassword ? 'text' : 'password'}
                 />
                 <RHFTextField name='file' label='Avatar' />
-                <Button type='submit' name={"Signup"} onClick={''} />
+                <Button name={"Signup"} />
                 <Button name={"Login"} href={`/login`} />
 
             </div>

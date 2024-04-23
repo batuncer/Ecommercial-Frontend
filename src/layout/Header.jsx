@@ -36,6 +36,10 @@ const Header = () => {
         setKeyword("")
         navigate('products')
     }
+    const handleMenuItemClick = (url) => {
+        navigate(url);
+        setOpened(false);
+    };
     return (
         <div className='bg-gray-100 h-16 px-5 flex items-center justify-between'>
             <div className="text-4xl">
@@ -50,9 +54,9 @@ const Header = () => {
                 <div className="relative">
                     <CgProfile onClick={() => setOpened(!opened)} className="w-8 h-8" />
                     {opened && (
-                        <div className="absolute w-[200px] bg-white shadow-lg shadow-grey-900">
+                        <div className="absolute w-[200px] bg-white shadow-lg shadow-grey-900 cursor-pointer">
                             {menuItems.map((item, i) => (
-                                <div className="px-2 py-1 hover:bg-gray-300" key={i}>{item.name}</div>
+                                <div className="px-2 py-1 hover:bg-gray-300" key={i} onClick={() => handleMenuItemClick(item.url)}>{item.name}</div>
                             ))}
                         </div>
                     )}

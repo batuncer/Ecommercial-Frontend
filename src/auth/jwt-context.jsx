@@ -160,9 +160,7 @@ export function AuthProvider({ children }) {
                 type: TYPE_SUCCESS_REGISTER
             });
         } catch (error) {
-            // Hata durumunda işlemleri yönet
             console.error("Error during registration:", error);
-            // Hata durumunu uygun şekilde işleyin veya kullanıcıya gösterin
         }
     };
 
