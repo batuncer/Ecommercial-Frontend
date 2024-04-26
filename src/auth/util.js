@@ -1,13 +1,13 @@
 export const setSession = (token) => {
   if (token) {
-    localStorage.setItem("token", token);
+    localStorage.setItem("jwtToken", token);
   } else {
-    localStorage.removeItem("token");
+    localStorage.removeItem("jwtToken");
   }
 };
 
 export const fetchWithToken = async (url, options = {}) => {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem("jwtToken");
   if (token) {
     options.headers = {
       ...options.headers,

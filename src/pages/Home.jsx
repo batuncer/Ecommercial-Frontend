@@ -1,15 +1,25 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProducts } from "../redux/productSlice";
 import ProductCard from "../components/ProductCard";
 
 const Home = () => {
     const dispatch = useDispatch();
-    const { products, loading } = useSelector(state => state.products);
+    const { products, totalPages } = useSelector((state) => state.products);
+    const [currentPage, setCurrentPage] = useState(1);
 
     useEffect(() => {
-        dispatch(getProducts())
-    }, [dispatch])
+        dispatch(getProducts(currentPage));
+    }, [dispatch, currentPage]);
+
+    const handleNextPage = () => {
+        setCurrentPage((prevPage) => prevPage + 1);
+    };
+
+    const handlePrevPage = () => {
+        setCurrentPage((prevPage) => prevPage - 1)
+    };
+
     return (
         <>
             <div className="flex items-center justify-center gap-5 my-10 h-auto">
@@ -19,22 +29,34 @@ const Home = () => {
                     style={{ width: '1500px', height: 'auto' }}
                 />
             </div>
-
-            {
-                loading ? "Loading..." : <div>
-                    {
-                        products && <div className="flex items-center justify-center gap-5 my-5 flex-wrap">
-                            {
-                                products.map((product, i) => (
-                                    <ProductCard product={product} key={i} />
-                                ))
-                            }
-                        </div>
-                    }
-                </div >
-            }
+            <div style={{ fontSize: '2rem', color: 'white', fontWeight: 'bold', textAlign: 'center', margin: "10px", backgroundColor: 'rgb(148 163 184)' }}>
+                PRODUCTS
+            </div>
+            {products && (
+                <div className="flex items-center justify-center gap-5 my-5 flex-wrap">
+                    {products.map((product, i) => (
+                        <ProductCard product={product} key={i} />
+                    ))}
+                </div>
+            )}
+            <div className="flex justify-center my-5">
+                <button
+                    onClick={handlePrevPage}
+                    disabled={currentPage === 1}
+                    className="mr-3 px-4 py-2 bg-gray-200"
+                >
+                    Prev
+                </button>
+                <button
+                    onClick={handleNextPage}
+                    disabled={currentPage === totalPages}
+                    className="px-4 py-2 bg-gray-200"
+                >
+                    Next
+                </button>
+            </div>
         </>
-    )
-}
+    );
+};
 
 export default Home;

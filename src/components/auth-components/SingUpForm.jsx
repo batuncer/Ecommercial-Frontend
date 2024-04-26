@@ -1,76 +1,98 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import * as Yup from 'yup';
-import { yupResolver } from "@hookform/resolvers/yup"
-import { useForm } from "react-hook-form"
-import FormProvider from "../../hooks/Form-provider";
-import RHFTextField from "../../hooks/RHFTextField";
-import { Button } from "../Button";
-import { config } from "../../config";
+import { FormProvider, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import RHFTextField from '../../hooks/RHFTextField';
+import { Button } from '../Button';
+import { useAuthContext } from '../../auth/useAuthContext';
 
 
 const SignUpForm = () => {
-
-    const [showPassword, setShowPassword] = useState(false);
-    const schema = Yup.object().shape({
-        username: Yup.string().max(255, "Max 255").required(),
-        email: Yup.string().max(255, "Max 255").required(),
-        password: Yup.string().required(),
-        file: Yup.string().required()
-    })
-
+    const { register } = useAuthContext();
     const methods = useForm({
-        resolver: yupResolver(schema),
-
+        resolver: yupResolver(Yup.object().shape({
+            username: Yup.string().required(),
+            email: Yup.string().email().required(),
+            password: Yup.string().required(),
+            file: Yup.string().required()
+        }))
     });
 
     const {
-
+        reset,
+        setError,
         handleSubmit,
-
-        formState: { isSubmitting, isValid },
+        formState: { errors, isSubmitting },
     } = methods;
+    //const [error, setError] = useState('');
 
     const onSubmit = async (data) => {
         try {
-            const response = await fetch(`${config.api.url}/register`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(data),
-            });
-
-            const result = await response.json();
-
-            if (response.ok) {
-                console.log(result.message);
-            } else {
-                console.error(result.error);
-            }
+            await register(data.email, data.password, data.username, data.avatar, data.role);
         } catch (error) {
-            console.error("Error during signup:", error);
+            setError('Registration failed. Please try again.');
         }
     };
+
     return (
-        <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+        <div className="flex justify-center items-center h-screen">
+            <FormProvider {...methods} >
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', maxWidth: 'sm', margin: 'auto' }}>
+                    <h1 style={{ fontSize: '2rem', fontWeight: 'bold' }}>SIGN UP PAGE</h1>
+                    <form onSubmit={methods.handleSubmit(onSubmit)} className=" rounded-md p-20" style={{ margin: '30px', backgroundColor: 'rgb(176, 226, 222)' }}>
 
-            <div>
-                <RHFTextField name='username' label='Username' />
-                <RHFTextField name='email' label='Email' />
-                <RHFTextField
-                    name='password'
-                    label='Password'
-                    type={showPassword ? 'text' : 'password'}
-                />
-                <RHFTextField name='file' label='Avatar' />
-                <Button name={"Signup"} />
-                <Button name={"Login"} href={`/login`} />
-
-            </div>
-
-        </FormProvider>
-
-    )
+                        <div className="md:flex md:items-center mb-6">
+                            <div className="md:w-1/3">
+                                <label className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" htmlFor="username">
+                                    Username
+                                </label>
+                            </div>
+                            <div className="md:w-2/3">
+                                <RHFTextField name="username" id="username" type="text" className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" />
+                            </div>
+                        </div>
+                        <div className="md:flex md:items-center mb-6">
+                            <div className="md:w-1/3">
+                                <label className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" htmlFor="email">
+                                    Email
+                                </label>
+                            </div>
+                            <div className="md:w-2/3">
+                                <RHFTextField name="email" id="email" type="email" className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" />
+                            </div>
+                        </div>
+                        <div className="md:flex md:items-center mb-6">
+                            <div className="md:w-1/3">
+                                <label className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" htmlFor="password">
+                                    Password
+                                </label>
+                            </div>
+                            <div className="md:w-2/3">
+                                <RHFTextField name="password" id="password" type="password" className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" />
+                            </div>
+                        </div>
+                        <div className="md:flex md:items-center mb-6">
+                            <div className="md:w-1/3">
+                                <label className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" htmlFor="file">
+                                    File
+                                </label>
+                            </div>
+                            <div className="md:w-2/3">
+                                <RHFTextField name="file" id="file" type="file" className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" />
+                            </div>
+                        </div>
+                        <div className="md:flex md:items-center">
+                            <div className="md:w-1/3"></div>
+                            <div className="md:w-2/3">
+                                {/* <Button name="Sign Up" className="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" /> */}
+                                <button className="w-[150px] h-10 flex items-center justify-center text-lg bg-black text-white rounded-md" type='submit' >Sign Up</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </FormProvider>
+        </div>
+    );
 }
 
-export default SignUpForm
+export default SignUpForm;

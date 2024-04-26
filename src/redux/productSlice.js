@@ -5,11 +5,18 @@ const initialState = {
   products: [],
   product: {},
   loading: false,
+  totalPages: 0,
 };
 
-export const getProducts = createAsyncThunk("products", async () => {
-  const response = await fetch(`${config.api.url}/products`);
-  return await response.json();
+export const getProducts = createAsyncThunk("products", async (page = 0) => {
+  const response = await fetch(`${config.api.url}/products?page=${page}`);
+  const data = await response.json();
+
+  const totalItems = 100;
+  const itemsPerPage = 12;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+  return { data, totalPages };
 });
 
 export const getProductsSearch = createAsyncThunk(
@@ -26,7 +33,7 @@ export const getProductsSearch = createAsyncThunk(
         params.keyword
       }&rating[gte]=${params.rate || 0}&price[gte]=${
         params.price.min || 0
-      }&price[lte]=${params.price.max || 30000}&catagory=${params.category}`;
+      }&price[lte]=${params.price.max || 30000}&category=${params.category}`;
     }
 
     const response = await fetch(link);
@@ -50,7 +57,8 @@ export const productSlice = createSlice({
       })
       .addCase(getProducts.fulfilled, (state, action) => {
         state.loading = false;
-        state.products = action.payload;
+        state.products = action.payload.data;
+        state.totalPages = action.payload.totalPages;
       })
       .addCase(getProductDetails.pending, (state) => {
         state.loading = true;

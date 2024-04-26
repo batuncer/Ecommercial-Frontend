@@ -1,8 +1,8 @@
+import React from 'react';
 import { useFormContext, Controller } from 'react-hook-form';
 
-
-export default function RHFTextField({ name, ...other }) {
-    const { control, setValue } = useFormContext();
+const RHFTextField = ({ name, ...other }) => {
+    const { control } = useFormContext();
 
     return (
         <Controller
@@ -16,10 +16,10 @@ export default function RHFTextField({ name, ...other }) {
                     error={!!error}
                     helperText={error?.message}
                     {...other}
-
                 />
-
             )}
         />
     );
 }
+
+export default RHFTextField;

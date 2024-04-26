@@ -1,6 +1,7 @@
 import { createContext, useEffect, useReducer, useCallback } from 'react';
 
 import { setSession } from './util';
+import { config } from '../config';
 
 // ----------------------------------------------------------------------
 const TYPE_INITIALIZE = "INITIALIZE"
@@ -74,7 +75,7 @@ export function AuthProvider({ children }) {
     const initialize = useCallback(async () => {
         try {
 
-            const accessToken = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : '';
+            const accessToken = typeof window !== 'undefined' ? localStorage.getItem('jwtToken') : '';
 
 
 
@@ -131,24 +132,23 @@ export function AuthProvider({ children }) {
 
 
 
-    const register = async (email, password, name, file, role) => {
+    const register = async (email, password, username, file, role) => {
         try {
-            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/signup`, {
+            const response = await fetch(`${config.api.url}/register`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
+                    username,
                     email,
                     password,
-                    name,
                     file,
                     role
                 })
             });
 
             if (!response.ok) {
-                // Hata durumunu kontrol et
                 const errorData = await response.json();
                 throw new Error(errorData.message || "Registration failed");
             }

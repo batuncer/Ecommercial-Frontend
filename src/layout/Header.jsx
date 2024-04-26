@@ -15,8 +15,8 @@ const Header = () => {
             url: "/login"
         },
         {
-            name: "Singup",
-            url: "/singup"
+            name: "Signup",
+            url: "/signup"
         },
         {
             name: 'Profile',
@@ -67,6 +67,7 @@ const Header = () => {
                 </div>
             </div>
         </div>
+
     );
 };
 
