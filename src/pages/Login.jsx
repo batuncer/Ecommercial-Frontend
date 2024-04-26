@@ -9,7 +9,6 @@ const Login = () => {
     }
     return (
         <div maxWidth="sm">
-            <h2>Login Page</h2>
             <LoginForm onSubmit={onSubmit} />
         </div>
     );
