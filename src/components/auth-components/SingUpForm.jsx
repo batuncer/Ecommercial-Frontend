@@ -5,16 +5,19 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import RHFTextField from '../../hooks/RHFTextField';
 import { Button } from '../Button';
 import { useAuthContext } from '../../auth/useAuthContext';
+import { useNavigate } from 'react-router-dom';
 
 
 const SignUpForm = () => {
     const { register } = useAuthContext();
+    const navigate = useNavigate();
+
     const methods = useForm({
         resolver: yupResolver(Yup.object().shape({
             username: Yup.string().required(),
             email: Yup.string().email().required(),
             password: Yup.string().required(),
-            file: Yup.string().required()
+            avatar: Yup.string().optional()
         }))
     });
 
@@ -28,7 +31,10 @@ const SignUpForm = () => {
 
     const onSubmit = async (data) => {
         try {
-            await register(data.email, data.password, data.username, data.avatar, data.role);
+            await register(data.email, data.password, data.username, data.role);
+            navigate('/')
+            setLoged(true)
+
         } catch (error) {
             setError('Registration failed. Please try again.');
         }
@@ -71,16 +77,7 @@ const SignUpForm = () => {
                                 <RHFTextField name="password" id="password" type="password" className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" />
                             </div>
                         </div>
-                        <div className="md:flex md:items-center mb-6">
-                            <div className="md:w-1/3">
-                                <label className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" htmlFor="file">
-                                    File
-                                </label>
-                            </div>
-                            <div className="md:w-2/3">
-                                <RHFTextField name="file" id="file" type="file" className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" />
-                            </div>
-                        </div>
+
                         <div className="md:flex md:items-center">
                             <div className="md:w-1/3"></div>
                             <div className="md:w-2/3">

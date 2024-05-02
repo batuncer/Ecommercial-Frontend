@@ -5,10 +5,11 @@ import { useForm, FormProvider } from "react-hook-form";
 import { Button } from "../Button";
 import RHFTextField from "../../hooks/RHFTextField";
 import { useAuthContext } from '../../auth/useAuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const LoginForm = () => {
-    const { login, token } = useAuthContext();
-
+    const { login } = useAuthContext();
+    const navigate = useNavigate();
     const schema = Yup.object().shape({
         username: Yup.string().required(),
         password: Yup.string().required()
@@ -21,6 +22,8 @@ const LoginForm = () => {
     const onSubmit = async (data) => {
         try {
             await login(data.username, data.password);
+            navigate('/')
+
         } catch (error) {
             console.error("Login failed:", error);
         }

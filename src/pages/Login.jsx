@@ -4,7 +4,7 @@ import LoginForm from '../components/auth-components/LoginForm';
 
 
 const Login = () => {
-    const onSubmit = (data) => {
+    const onSubmit = async (data) => {
         console.log("submit", data);
     }
     return (

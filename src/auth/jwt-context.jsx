@@ -2,6 +2,7 @@ import { createContext, useEffect, useReducer, useCallback } from 'react';
 
 import { setSession } from './util';
 import { config } from '../config';
+import { useNavigate } from 'react-router-dom';
 
 // ----------------------------------------------------------------------
 const TYPE_INITIALIZE = "INITIALIZE"
@@ -40,7 +41,6 @@ const reducer = (state, action) => {
             ...state,
             isAuthenticated: true,
             user: action.payload.user,
-
         };
     }
     if (action.type === TYPE_LOGOUT) {
@@ -51,11 +51,11 @@ const reducer = (state, action) => {
 
         };
     }
-    if (action.type === TYPE_REGISTER) {
+    if (action.type === TYPE_SUCCESS_REGISTER) {
         return {
             ...state,
             isSuccessRegister: true
-        }
+        };
     }
 
     return state;
@@ -75,8 +75,7 @@ export function AuthProvider({ children }) {
     const initialize = useCallback(async () => {
         try {
 
-            const accessToken = typeof window !== 'undefined' ? localStorage.getItem('jwtToken') : '';
-
+            const accessToken = typeof window !== 'undefined' ? localStorage.getItem('token') : '';
 
 
             if (accessToken) {
@@ -117,22 +116,43 @@ export function AuthProvider({ children }) {
     }, [initialize]);
 
     // LOGIN
-    const login = async (token) => {
-        setSession(token);
-        const user = JSON.parse(atob(token.split('.')[1]));
-        dispatch({
-            type: TYPE_LOGIN,
-            payload: {
-                user: user,
-            },
-        });
+    const login = async (username, password, navigate) => {
+        try {
+            const response = await fetch(`${config.api.url}/login`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    username,
+                    password
+                })
+            });
 
+
+            const data = await response.json();
+
+            const { user, token } = data;
+            if (!token) {
+                throw new Error('Token not found in response');
+            }
+
+            localStorage.setItem('token', token);
+            dispatch({
+                type: TYPE_LOGIN,
+                payload: {
+                    user
+                },
+            });
+            navigate('/');
+        } catch (error) {
+            console.error("Login failed:", error);
+        }
     };
 
 
 
-
-    const register = async (email, password, username, file, role) => {
+    const register = async (email, password, username, role) => {
         try {
             const response = await fetch(`${config.api.url}/register`, {
                 method: "POST",
@@ -143,7 +163,6 @@ export function AuthProvider({ children }) {
                     username,
                     email,
                     password,
-                    file,
                     role
                 })
             });
@@ -166,9 +185,9 @@ export function AuthProvider({ children }) {
 
 
 
-
     // LOGOUT
     const logout = async () => {
+        localStorage.removeItem('token');
         setSession(null);
         dispatch({
             type: TYPE_LOGOUT,

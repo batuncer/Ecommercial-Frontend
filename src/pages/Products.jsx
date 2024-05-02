@@ -28,7 +28,7 @@ export function Products() {
     }, [dispatch, keyword, price, rate, category])
 
     return (
-        <div className='min-h-screen'>
+        <div className='min-h-screen ' >
             <div className='flex'>
                 <div>
                     <Filter setPrice={setPrice} setRate={setRate} setCategory={setCategory} />

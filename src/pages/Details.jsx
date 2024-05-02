@@ -40,7 +40,7 @@ const ProductDetails = () => {
     slidesToShow: 1,
     slidesToScroll: 1,
   };
-  console.log(product)
+
   return (
     <>
       {loading ? (

@@ -21,7 +21,7 @@ const Home = () => {
     };
 
     return (
-        <>
+        <div className="mx-[10rem]" >
             <div className="flex items-center justify-center gap-5 my-10 h-auto">
                 <img
                     src="https://static.vecteezy.com/system/resources/previews/001/829/864/original/25-off-big-sale-poster-for-e-commerce-girl-riding-trolley-and-happy-shopping-character-concept-illustration-for-web-landing-page-banner-mobile-apps-card-book-illustration-free-vector.jpg"
@@ -33,10 +33,10 @@ const Home = () => {
                 PRODUCTS
             </div>
             {products && (
-                <div className="flex items-center justify-center gap-5 my-5 flex-wrap">
-                    {products.map((product, i) => (
-                        <ProductCard product={product} key={i} />
-                    ))}
+                <div >
+
+                    <ProductCard products={products} />
+
                 </div>
             )}
             <div className="flex justify-center my-5">
@@ -55,7 +55,7 @@ const Home = () => {
                     Next
                 </button>
             </div>
-        </>
+        </div>
     );
 };
 

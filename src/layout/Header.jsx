@@ -4,59 +4,89 @@ import { CgProfile } from "react-icons/cg";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getKeyword } from "../redux/generalSlice";
+import { useAuthContext } from '../../src/auth/useAuthContext';
+
 const Header = () => {
     const [opened, setOpened] = useState(false);
     const [keyword, setKeyword] = useState("");
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const token = localStorage.getItem('token');
+    const { logout } = useAuthContext();
+
     const menuItems = [
         {
-            name: "Login",
-            url: "/login"
+            name: "Home",
+            url: "/"
         },
-        {
-            name: "Signup",
-            url: "/signup"
-        },
-        {
-            name: 'Profile',
-            url: "/profile"
-        },
-        {
-            name: "Admin",
-            url: "/admin"
-        },
-        {
-            name: "Logout",
-            url: "/logout"
-        }
+
     ];
+
+    if (!token) {
+        menuItems.unshift(
+            {
+                name: "Login",
+                url: "/login"
+            },
+            {
+                name: "Signup",
+                url: "/signup"
+            }
+
+        );
+    } else {
+        menuItems.push(
+
+            {
+                name: 'Profile',
+                url: "/profile"
+            },
+            {
+                name: "Admin",
+                url: "/admin"
+            },
+            {
+                name: "Logout",
+                url: "/",
+                onClick: logout
+            }
+        );
+    }
+
     const searchProduct = () => {
         dispatch(getKeyword(keyword))
         setKeyword("")
         navigate('products')
     }
+
     const handleMenuItemClick = (url) => {
         navigate(url);
         setOpened(false);
     };
+
     return (
         <div className='bg-gray-100 h-16 px-5 flex items-center justify-between'>
             <div className="text-4xl">
-                baki.ecom
+                e.com
             </div>
             <div className="flex items-center gap-5">
                 <div className="flex items-center">
-                    <input value={keyword} onChange={e => setKeyword(e.target.value)} className='p-2 outline-none' type="text" placeholder="Search" />
+                    <input value={keyword} onChange={e => setKeyword(e.target.value)} className='p-2 outline-none cursor-pointer' type="text" placeholder="Search" />
                     <button onClick={searchProduct} className='p-2 ml-1 cursor-pointer bg-white'>Search</button>
                 </div>
 
                 <div className="relative">
                     <CgProfile onClick={() => setOpened(!opened)} className="w-8 h-8" />
                     {opened && (
-                        <div className="absolute w-[200px] bg-white shadow-lg shadow-grey-900 cursor-pointer">
+                        <div className="absolute w-[200px] bg-white shadow-lg shadow-grey-900">
                             {menuItems.map((item, i) => (
-                                <div className="px-2 py-1 hover:bg-gray-300" key={i} onClick={() => handleMenuItemClick(item.url)}>{item.name}</div>
+                                <div className="px-2 py-1 hover:bg-gray-300" key={i} onClick={() => {
+                                    if (item.onClick)
+                                        item.onClick()
+                                    else {
+                                        handleMenuItemClick(item.url)
+                                    }
+                                }}>{item.name}</div>
                             ))}
                         </div>
                     )}
@@ -67,7 +97,6 @@ const Header = () => {
                 </div>
             </div>
         </div>
-
     );
 };
 
