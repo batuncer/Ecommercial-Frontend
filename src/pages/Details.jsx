@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import Slider from "react-slick";
 import { FaStar } from "react-icons/fa";
 import { Button } from "../components/Button";
+import { addToCart } from "../redux/cartSlice";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -12,8 +13,17 @@ const ProductDetails = () => {
   const { loading, product } = useSelector(state => state.products);
   const [quantity, setQuantity] = useState(1)
   const addBasket = () => {
+    const data = {
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.images[0]['url'],
+      quantity: quantity,
+    }
+    dispatch(addToCart(data))
 
   }
+
 
   const decrement = () => {
     if (quantity > 1) {
@@ -40,6 +50,8 @@ const ProductDetails = () => {
     slidesToShow: 1,
     slidesToScroll: 1,
   };
+
+  console.log(product)
 
   return (
     <>

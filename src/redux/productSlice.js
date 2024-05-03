@@ -6,6 +6,7 @@ const initialState = {
   product: {},
   loading: false,
   totalPages: 0,
+  adminProducts: [],
 };
 
 export const getProducts = createAsyncThunk("products", async (page = 0) => {
@@ -17,6 +18,12 @@ export const getProducts = createAsyncThunk("products", async (page = 0) => {
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
   return { data, totalPages };
+});
+export const getAdminProducts = createAsyncThunk("admin", async (page = 0) => {
+  const response = await fetch(`${config.api.url}/products`);
+  const data = await response.json();
+
+  return data;
 });
 
 export const getProductsSearch = createAsyncThunk(
@@ -73,6 +80,13 @@ export const productSlice = createSlice({
       .addCase(getProductsSearch.fulfilled, (state, action) => {
         state.loading = false;
         state.products = action.payload;
+      })
+      .addCase(getAdminProducts.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getAdminProducts.fulfilled, (state, action) => {
+        state.loading = false;
+        state.adminProducts = action.payload;
       });
   },
 });
