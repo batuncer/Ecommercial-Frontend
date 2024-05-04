@@ -1,6 +1,6 @@
 import { createContext, useEffect, useReducer, useCallback } from 'react';
 
-import { setSession } from './util';
+import { fetchWithToken, setSession } from './util';
 import { config } from '../config';
 import { useNavigate } from 'react-router-dom';
 
@@ -79,7 +79,7 @@ export function AuthProvider({ children }) {
 
 
             if (accessToken) {
-                setSession(accessToken);
+                fetchWithToken(accessToken)
                 const user = JSON.parse(atob(accessToken.split('.')[1]));
                 dispatch({
                     type: TYPE_INITIALIZE,

@@ -33,7 +33,6 @@ const SignUpForm = () => {
         try {
             await register(data.email, data.password, data.username, data.role);
             navigate('/')
-            setLoged(true)
 
         } catch (error) {
             setError('Registration failed. Please try again.');

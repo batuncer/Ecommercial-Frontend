@@ -6,6 +6,7 @@ import { RiDeleteBinFill } from "react-icons/ri";
 import { Modal } from "../components/modal";
 import { openModalFunc } from "../redux/generalSlice";
 import Input from "../components/Input";
+import axios from "axios";
 
 export const Admin = () => {
     const dispatch = useDispatch();
@@ -31,6 +32,31 @@ export const Admin = () => {
         }
     }
 
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        try {
+            const response = await axios.post("/product/new", data);
+            console.log(response.data);
+
+            dispatch(openModalFunc());
+        } catch (error) {
+            console.error("Error adding product:", error);
+        }
+    };
+
+    const handleDelete = async (productId) => {
+        try {
+            console.log(productId);
+            const response = await axios.delete(`/products/${productId}`);
+            console.log(response.data);
+
+            dispatch(getAdminProducts());
+        } catch (error) {
+            console.error("Error deleting product:", error);
+        }
+    };
+
     const content = (
         <div className="my-3">
             <Input onChange={productHandle} name={"name"} id={"productName"} placeholder={"Product Name"} type={"text"} value={data.name} />
@@ -44,22 +70,25 @@ export const Admin = () => {
 
     return (
         <div className="mx-[10rem] min-h-screen">
-            <button onClick={addProduct} className="my-20 mx-[10rem] w-[1000px] h-12 flex items-center justify-center rounded-md bg-red-500 text-white">Add a product</button>
             <div>
+                <button onClick={addProduct} className="my-20 mx-[10rem] w-[1000px] h-12 flex items-center justify-center rounded-md bg-red-500 text-white">Add a product</button>
+
                 {
+
                     adminProducts?.map((item, i) => (
+
                         <div className="flex items-center justify-between border-b mb-2 py-2 px-4" key={i}>
                             <img className="w-20" src={item.images[0].url} alt="photo" />
                             <div className="text-xl">{item.name}</div>
                             <div className="mx-[10rem]  flex justify-between mb-2 py-2 px-4">
                                 <MdEdit size={24} className="mr-4" />
-                                <RiDeleteBinFill size={24} className="mr-4" />
+                                <RiDeleteBinFill onClick={() => handleDelete(item._id)} size={24} className="mr-4" />
                             </div>
                         </div>
                     ))
                 }
             </div>
-            {openModal && <Modal title={"Add a product"} onClick={() => { }} content={content} btnName="add" />}
+            {openModal && <Modal title={"Add a product"} onClick={handleSubmit} content={content} btnName="add" />}
         </div>
     );
 };

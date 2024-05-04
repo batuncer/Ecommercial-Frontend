@@ -1,3 +1,5 @@
+import axios from "axios";
+
 export const setSession = (token) => {
   if (token) {
     localStorage.setItem("token", token);
@@ -6,16 +8,9 @@ export const setSession = (token) => {
   }
 };
 
-export const fetchWithToken = async (url, options = {}) => {
+export const fetchWithToken = async () => {
   const token = localStorage.getItem("token");
   if (token) {
-    options.headers = {
-      ...options.headers,
-      Authorization: `Bearer ${token}`,
-    };
+    axios.defaults.headers.common.Authorization = `Bearer ${token}`;
   }
-
-  console.log(token);
-  const response = await fetch(url, options);
-  return response;
 };
