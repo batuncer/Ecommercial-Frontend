@@ -47,7 +47,6 @@ export const Admin = () => {
 
     const handleDelete = async (productId) => {
         try {
-            console.log(productId);
             const response = await axios.delete(`/products/${productId}`);
             console.log(response.data);
 

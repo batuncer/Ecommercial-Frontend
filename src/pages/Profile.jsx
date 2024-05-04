@@ -2,17 +2,20 @@ import React, { useEffect } from "react";
 import { getDetails } from "../redux/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import { useAuthContext } from "../auth/useAuthContext";
 
 const Profile = () => {
-    const { id } = useParams();
+
+
     const dispatch = useDispatch();
+    const { isAuthenticated } = useAuthContext();
     const { loading, user } = useSelector(state => state.user);
 
     useEffect(() => {
-        if (id) {
-            dispatch(getDetails(id));
+        if (isAuthenticated) {
+            dispatch(getDetails());
         }
-    }, [dispatch, id]);
+    }, [dispatch, isAuthenticated]);
 
     console.log(user);
     return (

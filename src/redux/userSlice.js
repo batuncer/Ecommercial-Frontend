@@ -1,16 +1,21 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { config } from "../config";
+import axios from "axios";
 
 const initialState = {
   user: {},
   loading: false,
 };
 
-export const getDetails = createAsyncThunk("users", async (id) => {
-  const response = await fetch(`${config.api.url}/user/${id}`);
-  return await response.json();
+export const getDetails = createAsyncThunk("users/getDetails", async () => {
+  try {
+    const response = await axios.get(`${config.api.url}/me`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching user details:", error);
+    throw error;
+  }
 });
-
 export const userSlice = createSlice({
   name: "user",
   initialState,
@@ -22,7 +27,10 @@ export const userSlice = createSlice({
       })
       .addCase(getDetails.fulfilled, (state, action) => {
         state.loading = false;
-        state.user = action.payload.data;
+        state.user = action.payload;
+      })
+      .addCase(getDetails.rejected, (state) => {
+        state.loading = false;
       });
   },
 });
