@@ -2,7 +2,7 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:8080",
+  "proxy": "https://ecommercial-backend-539f4pl7y-bakis-projects-4894db6d.vercel.app/",
   "dependencies": {
     "@heroicons/react": "^2.1.3",
     "@hookform/resolvers": "^3.3.4",
