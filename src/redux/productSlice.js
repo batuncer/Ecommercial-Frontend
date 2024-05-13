@@ -14,7 +14,7 @@ export const getProducts = createAsyncThunk("products", async (page = 0) => {
   const data = await response.json();
 
   const totalItems = 100;
-  const itemsPerPage = 12;
+  const itemsPerPage = 8;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
   return { data, totalPages };
@@ -64,8 +64,8 @@ export const productSlice = createSlice({
       })
       .addCase(getProducts.fulfilled, (state, action) => {
         state.loading = false;
-        state.products = action.payload.data;
-        state.totalPages = action.payload.totalPages;
+        state.products = [...state.products, ...action.payload.data];
+        state.totalPages = Math.ceil(100 / 8);
       })
       .addCase(getProductDetails.pending, (state) => {
         state.loading = true;

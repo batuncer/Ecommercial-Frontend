@@ -12,7 +12,7 @@ export const Admin = () => {
     const dispatch = useDispatch();
     const { openModal } = useSelector(state => state.general);
     const { adminProducts } = useSelector(state => state.products);
-    const [data, setData] = useState({ name: "", description: "", price: null, stock: null, category: "", images: [] })
+    const [data, setData] = useState({ name: "", description: "", price: "", stock: "", category: "", images: [] });
 
     useEffect(() => {
         dispatch(getAdminProducts());
@@ -24,19 +24,35 @@ export const Admin = () => {
 
     const productHandle = (e) => {
         if (e.target.name === "images") {
+            setData({
+                ...data,
+                images: e.target.value
+            });
         } else {
             setData({
                 ...data,
                 [e.target.name]: e.target.value
-            })
+            });
         }
-    }
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        const formData = new FormData();
+        formData.append('name', data.name);
+        formData.append('description', data.description);
+        formData.append('price', data.price);
+        formData.append('stock', data.stock);
+        formData.append('category', data.category);
+
+
         try {
-            const response = await axios.post("/product/new", data);
+            const response = await axios.post("/product/new", formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
             console.log(response.data);
 
             dispatch(openModalFunc());
@@ -63,7 +79,8 @@ export const Admin = () => {
             <Input onChange={productHandle} name={"price"} id={"productPrice"} placeholder={"Price"} type={"text"} value={data.price} />
             <Input onChange={productHandle} name={"stock"} id={"productStock"} placeholder={"Stock"} type={"text"} value={data.stock} />
             <Input onChange={productHandle} name={"category"} id={"productCategory"} placeholder={"Category"} type={"text"} value={data.category} />
-            <Input onChange={productHandle} name={"images"} id={"productImages"} placeholder={"Image"} type={"file"} value={data.images} />
+            <Input onChange={productHandle} name={"images"} id={"productImages"} placeholder={"Image URL"} type={"text"} value={data.images} />
+
         </div>
     );
 

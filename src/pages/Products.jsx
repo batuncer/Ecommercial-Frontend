@@ -38,9 +38,7 @@ export function Products() {
                         <div>
                             {products && (
                                 <div className="flex items-center justify-center gap-5 my-5 flex-wrap">
-                                    {currentItems.map((product, i) => (
-                                        <ProductCard product={product} key={i} />
-                                    ))}
+                                    <ProductCard products={products} />
                                 </div>
                             )}
                         </div>

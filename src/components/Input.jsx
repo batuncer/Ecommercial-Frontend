@@ -1,6 +1,6 @@
 import React from "react";
 
-const Input = ({ placeholder, value, name, id, type, onChange }) => {
+const Input = ({ placeholder, value, name, id, type, onChange, multiple }) => {
     return (
         <input
             className="w-full h-10 p-2 outline-none rounded-md border border-gray-300"
@@ -10,8 +10,9 @@ const Input = ({ placeholder, value, name, id, type, onChange }) => {
             value={value}
             placeholder={placeholder}
             onChange={onChange}
+            multiple={multiple}
         />
-    )
-}
+    );
+};
 
 export default Input;

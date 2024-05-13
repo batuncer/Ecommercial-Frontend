@@ -70,14 +70,14 @@ const Header = () => {
     };
 
     return (
-        <div className='bg-gray-100 h-16 px-5 flex items-center justify-between'>
+        <div className='bg-orange-600 h-16 px-5 flex items-center justify-between text-white'>
             <div className="text-4xl">
                 e.com
             </div>
             <div className="flex items-center gap-5">
                 <div className="flex items-center">
-                    <input value={keyword} onChange={e => setKeyword(e.target.value)} className='p-2 outline-none cursor-pointer' type="text" placeholder="Search" />
-                    <button onClick={searchProduct} className='p-2 ml-1 cursor-pointer bg-white'>Search</button>
+                    <input value={keyword} onChange={e => setKeyword(e.target.value)} className='p-2 outline-none rounded text-black' type="text" placeholder="Search for anything" />
+                    <button onClick={searchProduct} className='p-2 ml-1 cursor-pointer bg-white rounded text-black'>Search</button>
                 </div>
 
                 <div className="relative">
@@ -85,7 +85,7 @@ const Header = () => {
                     {opened && (
                         <div className="absolute w-[200px] bg-white shadow-lg shadow-grey-900">
                             {menuItems.map((item, i) => (
-                                <div className="px-2 py-1 hover:bg-gray-300" key={i} onClick={() => {
+                                <div className="px-2 py-1 text-black hover:bg-gray-300" key={i} onClick={() => {
                                     if (item.onClick)
                                         item.onClick()
                                     else {
@@ -98,7 +98,7 @@ const Header = () => {
                 </div>
                 <div className="relative cursor-pointer" >
                     <SlBasket size={25} onClick={() => navigate('/cart')} />
-                    <div className="absolute -top-2 -right-2 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center">{cart?.carts?.length}</div>
+                    <div className="absolute -top-2 -right-2 w-5 h-5 bg-gray-500 rounded-full flex items-center justify-center">{cart?.carts?.length}</div>
                 </div>
             </div>
         </div>
