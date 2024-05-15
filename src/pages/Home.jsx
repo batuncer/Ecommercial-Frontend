@@ -48,21 +48,21 @@ const Home = () => {
                         <img
                             src="https://t3.ftcdn.net/jpg/04/65/46/52/360_F_465465254_1pN9MGrA831idD6zIBL7q8rnZZpUCQTy.jpg"
                             alt=""
-                            style={{ borderRadius: "20px", width: '100%', height: '400px' }}
+                            style={{ borderRadius: "20px", width: '100%', height: '500px' }}
                         />
                     </div>
                     <div>
                         <img
                             src="https://static.vecteezy.com/system/resources/previews/001/829/864/original/25-off-big-sale-poster-for-e-commerce-girl-riding-trolley-and-happy-shopping-character-concept-illustration-for-web-landing-page-banner-mobile-apps-card-book-illustration-free-vector.jpg"
                             alt=""
-                            style={{ borderRadius: "20px", width: '100%', height: '400px' }}
+                            style={{ borderRadius: "20px", width: '100%', height: '500px' }}
                         />
                     </div>
                     <div>
                         <img
                             src="https://t4.ftcdn.net/jpg/03/20/46/13/360_F_320461388_5Snqf6f2tRIqiWlaIzNWrCUm1Ocaqhfm.jpg"
                             alt=""
-                            style={{ borderRadius: "20px", width: '100%', height: '400px' }}
+                            style={{ borderRadius: "20px", width: '100%', height: '500px' }}
                         />
                     </div>
 

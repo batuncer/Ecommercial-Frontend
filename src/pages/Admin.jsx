@@ -1,18 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAdminProducts } from "../redux/productSlice";
+import { createProduct, getAdminProducts } from "../redux/productSlice";
 import { MdEdit } from "react-icons/md";
 import { RiDeleteBinFill } from "react-icons/ri";
 import { Modal } from "../components/modal";
 import { openModalFunc } from "../redux/generalSlice";
 import Input from "../components/Input";
 import axios from "axios";
+import { config } from "../config";
 
 export const Admin = () => {
     const dispatch = useDispatch();
     const { openModal } = useSelector(state => state.general);
     const { adminProducts } = useSelector(state => state.products);
-    const [data, setData] = useState({ name: "", description: "", price: "", stock: "", category: "", images: [] });
+    const [formData, setFormData] = useState({
+        name: "",
+        description: "",
+        price: "",
+        stock: "",
+        category: "",
+    });
+
+    const [image, setImage] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         dispatch(getAdminProducts());
@@ -22,49 +32,48 @@ export const Admin = () => {
         dispatch(openModalFunc());
     };
 
-    const productHandle = (e) => {
-        if (e.target.name === "images") {
-            setData({
-                ...data,
-                images: e.target.value
-            });
-        } else {
-            setData({
-                ...data,
-                [e.target.name]: e.target.value
-            });
-        }
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({
+            ...formData,
+            [name]: value
+        });
     };
+
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        transformFile(file)
+    };
+
+    const transformFile = (file) => {
+        const reader = new FileReader();
+
+        if (file) {
+            reader.readAsDataURL(file);
+            reader.onloadend = () => {
+                setImage(reader.result)
+            }
+        }
+        else {
+            setImage(null)
+        };
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        const formData = new FormData();
-        formData.append('name', data.name);
-        formData.append('description', data.description);
-        formData.append('price', data.price);
-        formData.append('stock', data.stock);
-        formData.append('category', data.category);
-
-
-        try {
-            const response = await axios.post("/product/new", formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            });
-            console.log(response.data);
-
-            dispatch(openModalFunc());
-        } catch (error) {
-            console.error("Error adding product:", error);
-        }
+        dispatch(createProduct({
+            name: formData.name,
+            description: formData.description,
+            price: formData.price,
+            stock: formData.stock,
+            category: formData.category,
+            images: image
+        }))
     };
 
     const handleDelete = async (productId) => {
         try {
             const response = await axios.delete(`/products/${productId}`);
-            console.log(response.data);
 
             dispatch(getAdminProducts());
         } catch (error) {
@@ -74,13 +83,15 @@ export const Admin = () => {
 
     const content = (
         <div className="my-3">
-            <Input onChange={productHandle} name={"name"} id={"productName"} placeholder={"Product Name"} type={"text"} value={data.name} />
-            <Input onChange={productHandle} name={"description"} id={"productDescription"} placeholder={"Description"} type={"text"} value={data.description} />
-            <Input onChange={productHandle} name={"price"} id={"productPrice"} placeholder={"Price"} type={"text"} value={data.price} />
-            <Input onChange={productHandle} name={"stock"} id={"productStock"} placeholder={"Stock"} type={"text"} value={data.stock} />
-            <Input onChange={productHandle} name={"category"} id={"productCategory"} placeholder={"Category"} type={"text"} value={data.category} />
-            <Input onChange={productHandle} name={"images"} id={"productImages"} placeholder={"Image URL"} type={"text"} value={data.images} />
+            <form onSubmit={handleSubmit}>
+                <Input onChange={handleInputChange} name="name" placeholder="Product Name" type="text" value={formData.name} />
+                <Input onChange={handleInputChange} name="description" placeholder="Description" type="text" value={formData.description} />
+                <Input onChange={handleInputChange} name="price" placeholder="Price" type="text" value={formData.price} />
+                <Input onChange={handleInputChange} name="stock" placeholder="Stock" type="text" value={formData.stock} />
+                <Input onChange={handleInputChange} name="category" placeholder="Category" type="text" value={formData.category} />
+                <Input onChange={handleImageChange} accept='image/' name="images" type="file" multiple />
 
+            </form>
         </div>
     );
 
@@ -90,9 +101,7 @@ export const Admin = () => {
                 <button onClick={addProduct} className="my-20 mx-[10rem] w-[1000px] h-12 flex items-center justify-center rounded-md bg-red-500 text-white">Add a product</button>
 
                 {
-
                     adminProducts?.map((item, i) => (
-
                         <div className="flex items-center justify-between border-b mb-2 py-2 px-4" key={i}>
                             <img className="w-20" src={item.images[0].url} alt="photo" />
                             <div className="text-xl">{item.name}</div>
@@ -104,7 +113,7 @@ export const Admin = () => {
                     ))
                 }
             </div>
-            {openModal && <Modal title={"Add a product"} onClick={handleSubmit} content={content} btnName="add" />}
+            {openModal && <Modal title="Add a product" onClick={handleSubmit} content={content} btnName="add" />}
         </div>
     );
 };

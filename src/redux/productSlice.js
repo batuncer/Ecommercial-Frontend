@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { config } from "../config";
+import axios from "axios";
 
 const initialState = {
   products: [],
@@ -7,6 +8,7 @@ const initialState = {
   loading: false,
   totalPages: 0,
   adminProducts: [],
+  new: null,
 };
 
 export const getProducts = createAsyncThunk("products", async (page = 0) => {
@@ -25,6 +27,22 @@ export const getAdminProducts = createAsyncThunk("admin", async (page = 0) => {
 
   return data;
 });
+
+export const createProduct = createAsyncThunk(
+  "newProduct",
+  async (newProduct) => {
+    try {
+      const response = await axios.post(
+        `${config.api.url}/product/new`,
+        newProduct
+      );
+
+      return response.data;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+);
 
 export const getProductsSearch = createAsyncThunk(
   "products2",
@@ -87,6 +105,14 @@ export const productSlice = createSlice({
       .addCase(getAdminProducts.fulfilled, (state, action) => {
         state.loading = false;
         state.adminProducts = action.payload;
+      })
+      .addCase(createProduct.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(createProduct.fulfilled, (state, action) => {
+        state.loading = false;
+        state.adminProducts.push(action.payload);
+        state.new = action.payload;
       });
   },
 });
