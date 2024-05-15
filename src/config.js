@@ -1,6 +1,6 @@
 export const config = {
   api: {
-    // url: "https://ecommercial-backend.vercel.app",
-    url: "http://localhost:8080",
+    url: "https://ecommercial-backend.vercel.app",
+    // url: "http://localhost:8080",
   },
 };
