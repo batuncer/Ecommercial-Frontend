@@ -14,7 +14,7 @@ const ProductDetails = () => {
   const [quantity, setQuantity] = useState(1)
   const addBasket = () => {
     const data = {
-      id: product.id,
+      id: product._id,
       name: product.name,
       price: product.price,
       image: product.images[0]['url'],
