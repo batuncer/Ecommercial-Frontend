@@ -1,71 +1,105 @@
-# Getting Started with Create React App
+# Frontend Service
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This frontend service provides a user interface for managing products and users. It is built with React and communicates with the backend service for CRUD operations. This project aims to deliver a seamless and responsive user experience.
 
-## Available Scripts
+## Table of Contents
 
-In the project directory, you can run:
+- [Installation](#installation)
+- [Usage](#usage)
+- [Features](#features)
+- [Technologies](#technologies)
+- [Future Implementations](#future-implementations)
+- [Contributing](#contributing)
+- [License](#license)
+- [Related Projects](#related-projects)
 
-### `npm start`
+## Installation
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+1. **Clone the repository:**
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+   ```sh
+   git clone https://github.com/yourusername/frontend-service.git
+   cd frontend-service
+   ```
 
-### `npm test`
+2. **Install dependencies:**
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+   ```sh
+   npm install
+   ```
 
-### `npm run build`
+3. **Set up environment variables:**
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+   Create a `.env` file in the root directory and add the following variables:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+   ```plaintext
+   REACT_APP_BACKEND_URL=http://localhost:3000
+   ```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+4. **Start the service:**
 
-### `npm run eject`
+   ```sh
+   npm start
+   ```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Usage
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+After starting the service, it will be available at `http://localhost:3000`. Open this URL in your browser to interact with the frontend.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Features
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- **User Authentication**: Login and registration functionality using JWT tokens.
+- **Product Management**: Create, read, update, and delete products.
+- **User Management**: Create, read, update, and delete users.
+- **Role Management**: Although roles are defined, the deployment is open to all users.
+- **Admin Panel**: Admins have access to additional functionalities for managing products and users.
+- **Responsive Design**: Optimized for both desktop and mobile views.
 
-## Learn More
+## Technologies
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- **React**: A JavaScript library for building user interfaces.
+- **Redux**: A predictable state container for JavaScript apps.
+- **React Router**: Declarative routing for React.
+- **Axios**: Promise based HTTP client for the browser and Node.js.
+- **Tailwind CSS**: A utility-first CSS framework for rapidly building custom user interfaces.
+- **JWT (JSON Web Tokens)**: For authentication and authorization.
+- **Cloudinary**: Cloud-based image and video management services (for uploading and managing product images).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Future Implementations
 
-### Code Splitting
+- **Password Reset**: Users will be able to reset their passwords via email. The backend for this feature has been implemented.
+- **Email System**: Automated emails for account verification, password reset, and notifications. The backend for this feature has been implemented.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Contributing
 
-### Analyzing the Bundle Size
+Contributions are welcome! Please follow these steps:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+1. Fork the repository.
+2. Create a new branch:
 
-### Making a Progressive Web App
+   ```sh
+   git checkout -b feature-branch
+   ```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+3. Make your changes.
+4. Commit your changes:
 
-### Advanced Configuration
+   ```sh
+   git commit -m 'Add some feature'
+   ```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+5. Push to the branch:
 
-### Deployment
+   ```sh
+   git push origin feature-branch
+   ```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+6. Open a pull request.
 
-### `npm run build` fails to minify
+Please ensure your code adheres to the project's coding standards and includes appropriate tests.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-# Ecommercial-Frontend
+## Related Projects
+
+- **[Backend Service](https://github.com/batuncer/Ecommercial-Backend)**
+
+- **[Order Service](https://github.com/batuncer/Ecommerce-order-service)**: Manages order creation, processing, and integration with RabbitMQ for message queuing.

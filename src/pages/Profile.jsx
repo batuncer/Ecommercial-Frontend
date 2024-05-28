@@ -17,7 +17,9 @@ const Profile = () => {
         }
     }, [dispatch, isAuthenticated]);
 
-    console.log(user);
+    useEffect(() => {
+
+    })
     return (
         <>
             {loading ? (
